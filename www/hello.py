@@ -6,7 +6,7 @@ def hello_world():
 	#return 'hello'
 	return '<h1>Hello World!</h1>'
 	
-@app.route('/hello/')
+#@app.route('/hello/')
 @app.route('/hello/<name>')
 def hello(name=None):
 	return render_template('hello.html',name=name)

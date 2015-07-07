@@ -1,0 +1,87 @@
+{% extends "leftbase.html" %}
+{% block left_content %}
+
+   <h4>Recourses</h4>
+   <ul>
+      <li><b>Grass:</b><i>{{Grass_Num}}</i></li>
+      <li><b>Wood:</b><i>{{Wood_Num}}</i></li>
+      <li><b>Stone:</b><i>{{Stone_Num}}</i></li>
+      <li><b>Money:</b><i>{{Money_Num}}</i></li>
+      <li><b>Diamond:</b><i>{{Diamond_Num}}</i></li>
+   </ul>
+   
+   <h4>Constructions</h4>
+   <ul>
+   <li><form action="/minicipal" method="post">
+      <b>Minicipal</b>
+      <i>Level:{{Minicipal_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   
+   <li><form action="/barracks" method="post">
+      <b>Barracks</b>
+      <i>Level:{{Barracks_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   
+   <li><form action="/storage" method="post">
+      <b>Storage</b>
+      <i>Level:{{Storage_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   
+   <li><form action="/farm" method="post">
+      <b>Farm</b>
+      <i>Level:{{Farm_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   
+   <li><form action="/diggings" method="post">
+      <b>Diggings</b>
+      <i>Level:{{Diggings_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   
+   <li><form action="/mill" method="post">
+      <b>Mill</b>
+      <i>Level:{{Mill_Level}}</i>
+      <input type="button" value="+1">
+   </li><form>
+   </ul>
+   
+   <h4>Solders</h4>
+   <ul>
+   <li><form action="/infantry" method="post">
+      <b>Infantry</b>
+      <i>Num:{{Infantry_Num}}</i>
+      <input type="button" value="+100">
+   </li><form>
+   
+   <li><form action="/cavalry" method="post">
+      <b>Cavalry</b>
+      <i>Num:{{Cavalry_Num}}</i>
+      <input type="button" value="+100">
+   </li><form>
+   
+   <li><form action="/archer" method="post">
+      <b>Archer</b>
+      <i>Num:{{Archer_Num}}</i>
+      <input type="button" value="+100">
+   </li><form>
+   </ul>
+   
+{% endblock %}
+
+{% block right_content %}
+<table width="700" height="500" border="1" bordercolor="00ff00">
+   {% for i in range(0,5) %}
+   <tr height="100">
+      {%for j in range(0,7) %}
+         <td width="100">
+            {{City[i*7+j]}}
+         </td>
+      {% endfor %}
+   </tr>
+   {% endfor %}
+</table>
+{% endblock %}

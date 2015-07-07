@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+<head>
+   <style>
+      div#wholepage {width:1000px}
+      div#myheader {background-color:#99bbbb}
+      div#myinfo {background-color:#ffff99;height:500px;width:300px;float:left}
+      div#mymap {background-color:#eeeeee;height:500px;width:700px;float:right}
+      div#footer {background-color:#99bbbb}
+   </style>
+   <title>FloodAge</title>
+</head>
+
+<body>
+<div id="wholepage">
+
+<div id="myheader">
+   <h2>Flood Age</h2>
+</div>
+
+<div id="myinfo">
+   {% block left_base %}{% endblock %}
+</div>
+
+<div id="mymap">
+   {% block right_base %}{% endblock %}
+</div>
+
+<div id="myfooter">
+   <p><i>All Rights Resersed by LZC&ZL @2015.07</i></p>
+</div>
+
+</div>
+</body>
+
+</html>
