@@ -1,20 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-from db.database import init_db
+from API import *
 
-import os
-os.system('rm db/game.db')
-init_db()
+#update()
+from tasks import *
 
-from db.database import db_session
-from db.models import *
+#clean_message()
 
-x = User('fffx','123')
-db_session.add(x)
-b = City('fffx',1,7)
-db_session.add(b)
-b.print_()
-c = Message(1245,'luzhicong','system',10,'Hello')
-c.print_()
-db_session.commit()
-print City.query.all()
+#level_up_minicipal_done.delay(234,3,4,20)
+
+#level_up_storage_done.delay(123,2,3,40)
+#clean()
+#level_up_minicipal('Lzc',2,3)
+#level_up_farm('Lzc',2,3)
+#recruit_archer('Lzc',2,3,1)
+#showMessage()
+test1.delay()
