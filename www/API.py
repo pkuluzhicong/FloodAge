@@ -31,7 +31,7 @@ def clean_message():
         db_session.delete(mes)
         db_session.commit()
 
-def level_up_minicipal(name,x,y):
+def level_up_minicipal(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -58,10 +58,11 @@ def level_up_minicipal(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Minicipal'))
     db_session.commit()
-    level_up_minicipal_done.delay(mesId,x,y,cost[3])
+    #level_up_minicipal_done.delay(mesId,x,y,cost[3])
+    level_up_minicipal_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
 
-def level_up_storage(name,x,y):
+def level_up_storage(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -89,10 +90,11 @@ def level_up_storage(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Storage'))
     db_session.commit()
-    level_up_storage_done.delay(mesId,x,y,cost[3])
+    #level_up_storage_done.delay(mesId,x,y,cost[3])
+    level_up_storage_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_barracks(name,x,y):
+def level_up_barracks(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -120,10 +122,11 @@ def level_up_barracks(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Barracks'))
     db_session.commit()
-    level_up_barracks_done.delay(mesId,x,y,cost[3])
+    #level_up_barracks_done.delay(mesId,x,y,cost[3])
+    level_up_barracks_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_farm(name,x,y):
+def level_up_farm(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -151,10 +154,11 @@ def level_up_farm(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Farm'))
     db_session.commit()
-    level_up_farm_done.delay(mesId,x,y,cost[3])
+    #level_up_farm_done.delay(mesId,x,y,cost[3])
+    level_up_farm_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_digging(name,x,y):
+def level_up_digging(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -182,10 +186,11 @@ def level_up_digging(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Digging'))
     db_session.commit()
-    level_up_digging_done.delay(mesId,x,y,cost[3])
+    #level_up_digging_done.delay(mesId,x,y,cost[3])
+    level_up_digging_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_mill(name,x,y):
+def level_up_mill(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -213,10 +218,11 @@ def level_up_mill(name,x,y):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Level up','Level up: Mill'))
     db_session.commit()
-    level_up_mill_done.delay(mesId,x,y,cost[3])
+    #level_up_mill_done.delay(mesId,x,y,cost[3])
+    level_up_mill_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def recruit_infantry(name,x,y,num=1):
+def recruit_infantry(name,x,y,num=1):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -246,10 +252,11 @@ def recruit_infantry(name,x,y,num=1):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Recruit','Recruit: Infantry'))
     db_session.commit()
-    recruit_infantry_done.delay(mesId,x,y,num,cost[3])
+    #recruit_infantry_done.delay(mesId,x,y,num,cost[3])
+    recruit_infantry_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
-def recruit_cavalry(name,x,y,num=1):
+def recruit_cavalry(name,x,y,num=1):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -279,10 +286,11 @@ def recruit_cavalry(name,x,y,num=1):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Recruit','Recruit: Cavalry'))
     db_session.commit()
-    recruit_cavalry_done.delay(mesId,x,y,num,cost[3])
+    #recruit_cavalry_done.delay(mesId,x,y,num,cost[3])
+    recruit_cavalry_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
-def recruit_archer(name,x,y,num=1):
+def recruit_archer(name,x,y,num=1):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -312,7 +320,8 @@ def recruit_archer(name,x,y,num=1):
     mesId = len(Message.query.all())+1
     db_session.add(Message(mesId,name,'system',cost[3],'Recruit','Recruit: Archer'))
     db_session.commit()
-    recruit_archer_done.delay(mesId,x,y,num,cost[3])
+    #recruit_archer_done.delay(mesId,x,y,num,cost[3])
+    recruit_archer_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
 def cancel_event(messageId):
@@ -329,7 +338,7 @@ def cancel_event(messageId):
     
         
         
-def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):
+def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):#
     #attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
     attacker = City.query.filter((City.posX == attackerPosX) & (City.posY == attackerPosY)).first()
     #defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
@@ -343,14 +352,17 @@ def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,caval
     
     mesId1 = len(Message.query.all())+1
     mesId2 = mesId1 + 1
-    time_delta = timedelta(minutes = int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*5))
+    #time_delta = timedelta(minutes = int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*5))
+    countdown_ =  int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*300) #用于延时调用
+    time_delta = timedelta(seconds = countdown_) #用于写入message
     
     
     db_session.add(Message(mesId1,attacker.name,'system',time_delta,'Attack','Attack: from '+attacker.name+' to ' + defenser.name))
     db_session.add(Message(mesId2,defenser.name,'system',time_delta,'Attack','Attack: from '+attacker.name+' to ' + defenser.name))
     db_session.commit()
     
-    attack_battle.delay(mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum,time_delta)
+    #attack_battle.delay(mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum,time_delta)
+    attack_battle.apply_async(args=[mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum], countdown=countdown_)
     
     return 'Success!'
     

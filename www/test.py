@@ -11,8 +11,7 @@ from tasks import *
 
 #level_up_storage_done.delay(123,2,3,40)
 #clean()
-#level_up_minicipal('Lzc',2,3)
+level_up_minicipal('Lzc',2,3)
 #level_up_farm('Lzc',2,3)
 #recruit_archer('Lzc',2,3,1)
-#showMessage()
-test1.delay()
+showMessage()
