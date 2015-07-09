@@ -1,5 +1,9 @@
 # -*- coding: utf-8 -*-
 
+#由Flask调用的指令接口，包括建筑升级，士兵招募，派遣军队等
+#主要流程：读取数据库检查条件-->作出相应读写,向celery worker发出异步调用-->马上return返回结果
+
+
 from db.database import init_db
 from db.database import db_session
 from db.models import *
@@ -15,25 +19,17 @@ init_db()
 ####
 
 
-def showMessage():
+def showMessage(): #显示数据库中Message表的所有条目
     for item in Message.query.all():
         item.print_()
 
-def clean():
-    for instance in City.query.all():
-        instance.grass=0
-        instance.wood=0
-        instance.stone=0
-        instance.minicipal=3
-        instance.storage=0
-        db_session.commit()
 
-def clean_message():
+def clean_message(): #清除数据库中Message表的未完成条目（调试用）
     for mes in Message.query.filter(Message.status==0).all():
         db_session.delete(mes)
         db_session.commit()
 
-def level_up_minicipal(name,x,y):#
+def level_up_minicipal(name,x,y): #升级市政厅，接收参数：用户名，城市坐标
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()# -*- coding: utf-8 -*-
     if city is None:
@@ -64,7 +60,7 @@ def level_up_minicipal(name,x,y):#
     level_up_minicipal_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
 
-def level_up_storage(name,x,y):#
+def level_up_storage(name,x,y): #升级仓库
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -96,7 +92,7 @@ def level_up_storage(name,x,y):#
     level_up_storage_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_barracks(name,x,y):#
+def level_up_barracks(name,x,y): #升级兵营
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -128,7 +124,7 @@ def level_up_barracks(name,x,y):#
     level_up_barracks_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_farm(name,x,y):#
+def level_up_farm(name,x,y): #升级农场
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -160,7 +156,7 @@ def level_up_farm(name,x,y):#
     level_up_farm_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_digging(name,x,y):#
+def level_up_digging(name,x,y):#升级矿洞
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -192,7 +188,7 @@ def level_up_digging(name,x,y):#
     level_up_digging_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def level_up_mill(name,x,y):#
+def level_up_mill(name,x,y):#升级伐木场
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -224,7 +220,7 @@ def level_up_mill(name,x,y):#
     level_up_mill_done.apply_async(args=[mesId,x,y], countdown=cost[3])
     return 'Success!'
     
-def recruit_infantry(name,x,y,num=1):#
+def recruit_infantry(name,x,y,num=1):#招募步兵
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -258,7 +254,7 @@ def recruit_infantry(name,x,y,num=1):#
     recruit_infantry_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
-def recruit_cavalry(name,x,y,num=1):#
+def recruit_cavalry(name,x,y,num=1):#招募骑兵
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -292,7 +288,7 @@ def recruit_cavalry(name,x,y,num=1):#
     recruit_cavalry_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
-def recruit_archer(name,x,y,num=1):#
+def recruit_archer(name,x,y,num=1):#招募弓箭手
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
     city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
@@ -326,7 +322,7 @@ def recruit_archer(name,x,y,num=1):#
     recruit_archer_done.apply_async(args=[mesId,x,y,num], countdown=cost[3])
     return 'Success!'
     
-def cancel_event(messageId):
+def cancel_event(messageId): #取消事件，接收参数：消息Id
     mes = Message.query.filter((Message.messageId == messageId) & (Message.status != 1)).first() 
     #if event != 'Attack' and event != 'Come Back':
         #mes = Message.query.filter(and_(Message.messageId == messageId , Message.status != 1)).first() 
@@ -340,7 +336,7 @@ def cancel_event(messageId):
     
         
         
-def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):#
+def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):#进攻事件，接收参数：攻防双方坐标，士兵数目
     #attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
     attacker = City.query.filter((City.posX == attackerPosX) & (City.posY == attackerPosY)).first()
     #defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
@@ -355,8 +351,8 @@ def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,caval
     mesId1 = len(Message.query.all())+1
     mesId2 = mesId1 + 1
     #time_delta = timedelta(minutes = int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*5))
-    countdown_ =  int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*300) #用于延时调用
-    time_delta = timedelta(seconds = countdown_) #用于写入message
+    countdown_ =  int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*300) #由距离算出到达秒数，用于延时调用
+    time_delta = timedelta(seconds = countdown_) #由秒数算出时间间隔，用于写入message
     
     
     db_session.add(Message(mesId1,attacker.name,'system',time_delta,'Attack','Attack: from '+attacker.name+' to ' + defenser.name))

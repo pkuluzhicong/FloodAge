@@ -1,0 +1,10 @@
+#! /bin/bash
+
+. venv/bin/activate
+cd ./www
+
+python create_database.py
+celery -A tasks worker --loglevel=DEBUG -B --config=celery_settings &
+
+cd ..
+python runserver.py

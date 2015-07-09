@@ -6,7 +6,7 @@ from datetime import timedelta
 from math import sqrt
 #from sqlalchemy import and_
 
-
+#celery worker程序, 任务:初始化数据库, 周期更新城市资源, 接收通过API.py发来的异步调用
 
 CELERYBEAT_SCHEDULE = {
     'add-every-30-seconds': {
@@ -16,12 +16,12 @@ CELERYBEAT_SCHEDULE = {
     },
 }
 
-from db.database import init_db
+#from db.database import init_db
 from db.database import db_session
 from db.models import *
 
-init_db()
-clean_message()
+#init_db()
+#clean_message()
 
 #db_session.add(City('Zl',3,4))
 #db_session.add(City('Lzc',2,3))
@@ -192,7 +192,7 @@ def attack_return(mesId, x, y, infantryNum,cavalryNum,archerNum,wood,stone,grass
 @periodic_task(run_every=timedelta(seconds=60)) #每分钟执行一次，更新各城市的资源
 def update():
     for instance in City.query.all():
-        limit = (instance.storage + 1) * 500
+        limit = (instance.storage) * 500
         instance.grass = min((instance.grass + City.BasicProduction['grass']),limit)
         instance.wood = min((instance.wood + City.BasicProduction['wood']),limit)
         instance.stone = min((instance.stone + City.BasicProduction['stone']),limit)
