@@ -2,7 +2,7 @@ import time
 from celery import Celery
 from celery.task.base import periodic_task
 from datetime import timedelta
-from sqlalchemy import and_
+#from sqlalchemy import and_
 
 
 
@@ -110,8 +110,10 @@ def recruit_archer_done(mesId,x,y,num,timedelta):
 @celery.task()
 def attack_battle(mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum,timedelta):
     time.sleep(timedelta)
-    attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
-    defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
+    #attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
+    #defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
+    attacker = City.query.filter((City.posX == attackerPosX) & (City.posY == attackerPosY)).first()
+    defenser = City.query.filter((City.posX == defenserPosX) & (City.posY == defenserPosY)).first()
     
     mes1 = Message.query.filter(Message.messageId==mesId1).first()
     mes2 = Message.query.filter(Message.messageId==mesId2).first()
@@ -164,7 +166,7 @@ def attack_return(mesId, x, y, infantryNum,cavalryNum,archerNum,wood,stone,grass
     time.sleep(timedelta)
     
     mes = Message.query.filter(Message.messageId==mesId).first()
-    mes = status = 1
+    mes.status = 1
     
     city =  City.query.filter(City.posX==x and City.posY== y).first()
     city.infantry += infantryNum

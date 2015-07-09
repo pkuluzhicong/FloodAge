@@ -1,0 +1,193 @@
+{% extends "layout/base01.html" %}
+
+
+{% block head %}
+    <style>
+        div#mycontainer {height:500px;width:1210px;float:left}
+        div#myinfo {height:500px;width:300px;float:left}
+        div#mymap {height:500px;float:right}
+        ul.info {border-width:1px;border-style:solid;margin:5px;font-size:9pt}
+        body {background-color:#DDDDDD;}
+        span#leftheader {font-size:12pt;font-style:italic;font-weight:bold;}
+        td.home66 {font-weight:bold;text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/home55.png') }});}
+        td.city66 {text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/city55.png') }} ) ;}
+        td.grass66 {text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/grass44.png') }});}
+        span.close {text-align:left;}
+        a:link {color:#666}
+        a:hover {color:#FFF}
+
+    </style>
+    
+    <!--   refresh automatically-->
+    <meta http-equiv="refresh" content="29">
+    
+    
+{% endblock %}
+    
+    
+<!--buttons in the header-->
+{% block header_icons %}
+  <li><a >Player:{{UserName}}</a></li>
+  <li><a href="logout">Quit</a></li>
+{% endblock %}
+            
+            
+<!--main part-->
+{% block content %}
+<div id="mycontainer">
+
+<!--left part:Information of your city-->
+<div id="myinfo">
+  
+    <!--the alert of changes of city-->
+    {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+        <div class="alert-message block-message error">
+            <a href="/fight"><span class="close">×&nbsp;&nbsp;</span></a>
+            <ul class="info">
+                {%- for msg in msgs %}
+                  <li>{{ msg }}</li>
+                {% endfor -%}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
+   
+    <!--city information starts here-->
+    <span id="leftheader">Position:{{UserCity.posX}},{{UserCity.posY}}</span></br>
+    <span id="leftheader">Recourses</span>
+    <ul class="info">
+        <li><b>Grass:</b><i>{{UserCity.grass}}</i></li>
+        <li><b>Wood:</b><i>{{UserCity.wood}}</i></li>
+        <li><b>Stone:</b><i>{{UserCity.stone}}</i></li>
+        <!--
+        <li><b>Money:</b><i>{{Money_Num}}</i></li>
+        <li><b>Diamond:</b><i>{{Diamond_Num}}</i></li>
+        -->
+    </ul>
+    
+    <span id="leftheader">Constructions</span>
+    <ul class="info">
+    <!--
+    <li><form action="/minicipal" method="post">
+        <b>Minicipal</b>
+        <i>Level:{{Minicipal_Level}}</i>
+        <input type="submit" value="+1">
+    </form></li>
+    -->
+    
+    <li>
+        <b>Minicipal</b>
+        <i>Level:{{UserCity.minicipal}}</i>
+        <a href='/minicipal'><button>+1</button></a>
+    </li>
+    
+    <li>
+        <b>Barracks</b>
+        <i>Level:{{UserCity.barracks}}</i>
+        <a href='/barracks'><button>+1</button></a>
+    </li>
+    
+    <li>
+        <b>Storage</b>
+        <i>Level:{{UserCity.storage}}</i>
+        <a href='/storage'><button>+1</button></a>
+    </li>
+    
+    <li>
+        <b>Farm</b>
+        <i>Level:{{UserCity.farm}}</i>
+        <a href='/farm'><button>+1</button></a>
+    </li>
+   
+    <li>
+        <b>Digging</b>
+        <i>Level:{{UserCity.digging}}</i>
+        <a href='/diggings'><button>+1</button></a>
+    </li>
+   
+    <li>
+        <b>Mill</b>
+        <i>Level:{{UserCity.mill}}</i>
+        <a href='/mill'><button>+1</button></a>
+    </li>
+    </ul>
+   
+    <span id="leftheader">Solders</span>
+    <ul class="info">
+    <!--
+    <li><form action="/infantry" method="post">
+        <b>Infantry</b>
+        <i>Num:{{Infantry_Num}}</i>
+        <input type="button" value="+5">
+    </form></li>
+    -->
+    
+    <li>
+        <b>Infantry</b>
+        <i>Num:{{UserCity.infantry}}</i>
+        <a href='/infantry'><button>+1</button></a>
+    </li>
+    
+    <li>
+        <b>Cavalry</b>
+        <i>Num:{{UserCity.cavalry}}</i>
+        <a href='/cavalry'><button>+1</button></a>
+    </li>
+    
+    <li>
+        <b>Archer</b>
+        <i>Num:{{UserCity.archer}}</i>
+        <a href='/archer'><button>+1</button></a>
+    </li>
+    
+    <!--
+    <span id="leftheader">Constructing</span>
+    <ul>
+    {% for ele in Constructing_Queue %}
+        <li><form action="/constructing" method="post">
+            <b>{{ele}}</b>
+            <input type="button" value="x">
+        </form></li>
+    {% endfor %}
+    -->
+    </ul>
+    <span id="leftheader">Message Box</span>
+    <a href='/mymsg'><button >Open</button></a>
+</div>
+
+
+<!--right part:the map of the world-->
+<div id="mymap">
+    
+    <table width="900" height="500" border="1" >
+    {% for i in range(0,10) %}
+        <tr height="50">
+        {%for j in range(0,18) %}
+            {% if ((i==UserCity.posX) and (j==UserCity.posY)) %}
+                <td width="50" class="home66">Home</td>
+            {% else %}
+                {% if (Map[(i,j)] != Null)%}
+                  <td width="50" class="city66">
+                    <a href="/incity/{{ Map[(i,j)] }}">{{ Map[(i,j)] }}</a>
+                  </td>
+                {% else %}
+                  <td width="50" class="grass66">
+                  <p> </p>
+                  </td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    
+</div>
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  {% include "include/footer.html" %}
+{% endblock %}

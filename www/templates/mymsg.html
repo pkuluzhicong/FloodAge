@@ -1,0 +1,84 @@
+{% extends "layout/base01.html" %}
+
+{% block head %}
+    <style>
+        div#mycontainer {width:1210px;float:left}
+        div#myinfo {width:300px;float:left;text-align:center}
+        div#mymap {float:right}
+        body {background-color:#DDDDDD;}
+        a:link {color:#666}
+        a:hover {color:#FFF}
+        th.short1 {width:100px ;text-align:center;background-color:#AAA}
+        th.long1 {width:400px ;text-align:center;background-color:#AAA}
+        td.short1 {width:100px ;text-align:center}
+        td.long1 {width:400px ;text-align:center}
+    </style>
+{% endblock %}
+
+<!--buttons in the header-->
+{% block header_icons %}
+  <li><a >Player:{{UserName}}</a></li>
+  <li><a href="logout">Quit</a></li>
+{% endblock %}
+
+{% block content %}
+<div id="mycontainer">
+<div id="myinfo">
+    {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+        <div class="alert-message block-message error">
+            <a href="/mymsg"><span class="close">×&nbsp;&nbsp;</span></a>
+            <ul class="info">
+                {%- for msg in msgs %}
+                  <li>{{ msg }}</li>
+                {% endfor -%}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
+
+    <p class="lead" >
+        My Message Box
+    </p>
+    </br></br><a href="/fight" ><button >Back to My city</button></a>
+</div>
+<div id="mymap">
+    <table width="900" height="50" border="1" >
+        <tr height="50">
+            <th class="short1">Source</th>
+            <th class="short1">Start-Time</th>
+            <th class="short1">End-Time</th>
+            <th class="short1">Status</th>
+            <th class="long1">Title</th>
+        </tr>
+        {% for ele in MsgQueue : %}
+        <tr height="50">
+            <td class="short1">{{ele.sendername}}</td>
+            <td class="short1">{{ele.begin_time.strftime( '%Y-%m-%d %H:%M:%S ' )}}</td>
+            <td class="short1">{{ele.end_time.strftime( '%Y-%m-%d %H:%M:%S ' )}}</td>
+            <td class="short1">
+              {% if (ele.status !=0) %}
+                {% if ele.status > 0 : %}
+                  Finished
+                {% else : %}
+                  Canceled
+                {% endif %}
+              {% else %}
+                Unfinished
+                {% if ((ele.event != 'Attack') and (ele.event != 'Come Back'))  %}
+                   <a href="/msgcancel/{{ele.messageId}}"><button>Cancel</button></a>
+                {% endif %}
+              {% endif %}
+            </td>
+            <td class="long1"><a href="/detail/{{ele.messageId}}">{{ele.title}}</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+  {% include "include/footer.html" %}
+{% endblock %}

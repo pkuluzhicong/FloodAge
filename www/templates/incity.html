@@ -1,0 +1,138 @@
+{% extends "layout/base01.html" %}
+
+
+{% block head %}
+    <style>
+        div#mycontainer {height:500px;width:1210px;float:left}
+        div#myinfo {height:500px;width:300px;float:left}
+        div#mymap {height:500px;float:right}
+        ul.info {border-width:1px;border-style:solid;margin:5px;font-size:9pt}
+        body {background-color:#DDDDDD;}
+        span#leftheader {font-size:12pt;font-style:italic;font-weight:bold;}
+        span#invadeheader {font-size:12pt;font-weight:bold;color:#FF0000}
+        td.home66 {font-weight:bold;text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/home55.png') }});}
+        td.city66 {text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/city55.png') }} ) ;}
+        td.grass66 {text-align:center;background-position:center;background-image:url({{ url_for('static', filename='images/grass44.png') }});}
+        a:link {color:#666}
+        a:hover {color:#FFF}
+    </style>
+{% endblock %}
+    
+    
+<!--buttons in the header-->
+{% block header_icons %}
+  <li><a >Player:{{UserName}}</a></li>
+  <li><a href="logout">Quit</a></li>
+{% endblock %}
+            
+            
+<!--main part-->
+{% block content %}
+<div id="mycontainer">
+
+<!--left part:Information of other city-->
+<div id="myinfo">
+  
+    <!--the alert of actions towards the city-->
+    {% with msgs = get_flashed_messages() %}
+        {% if msgs %}
+        <div class="alert-message block-message error">
+            <a class="close" href="/incity/{{ cityname }}">×&nbsp;&nbsp;</a>
+            <ul class="info">
+                {%- for msg in msgs %}
+                  <li>{{ msg }}</li>
+                {% endfor -%}
+            </ul>
+        </div>
+        {% endif %}
+    {% endwith %}
+  
+    <!--city information starts here-->
+    <a href="/fight"><button >Back to My city</button></a></br>
+    <span id="leftheader">Owner:{{cityname}}</span></br>
+    <span id="leftheader">Position:{{OtherCity.posX}},{{OtherCity.posY}}</span></br>
+    <span id="leftheader">Recourses</span>
+    <ul class="info">
+        <li><b>Grass:</b><i>{{OtherCity.grass}}</i></li>
+        <li><b>Wood:</b><i>{{OtherCity.wood}}</i></li>
+        <li><b>Stone:</b><i>{{OtherCity.stone}}</i></li>
+    </ul>
+   
+    <span id="leftheader">Solders</span>
+    <ul class="info">
+    <li><form action="/infantry" method="post">
+        <b>Infantry</b>
+        <i>Num:{{OtherCity.infantry}}</i>
+    </form></li>
+   
+    <li><form action="/cavalry" method="post">
+        <b>Cavalry</b>
+        <i>Num:{{OtherCity.cavalry}}</i>
+    </form></li>
+   
+    <li><form action="/archer" method="post">
+        <b>Archer</b>
+        <i>Num:{{OtherCity.archer}}</i>
+    </form></li>
+    </ul>
+    
+    <span id="invadeheader" >Invade</span>
+    <ul>
+    <form action="/invade" method=post>
+        <dl>
+          <dt>Target:
+          <dd><input name=cityname value="{{cityname}}" readonly>
+          <dt>Infantry:
+          <dd><input type=text name=infantry>
+          <dt>Cavalry:
+          <dd><input type=text name=cavalry>
+          <dt>Archer:
+          <dd><input type=text name=archer>
+          <dd><input type=submit value=Invade!>
+        </dl>
+        
+    </form>
+    </ul>
+
+
+</div>
+
+
+<!--right part:the map of the world-->
+<div id="mymap">
+    
+    <table width="900" height="500" border="1" >
+    {% for i in range(0,10) %}
+        <tr height="50">
+        {%for j in range(0,18) %}
+            {% if ((i==UserCity.posX) and (j==UserCity.posY)) %}
+                <td width="50" class="home66">
+                  <a href="/fight">Home</a>
+                </td>
+            {% else %}
+                {% if (Map[(i,j)] != Null)%}
+                  <td width="50" class="city66">
+                    <a href="/incity/{{ Map[(i,j)] }}">{{ Map[(i,j)] }}</a>
+                  </td>
+                {% else %}
+                  <td width="50" class="grass66">
+                  <p> </p>
+                  </td>
+                {% endif %}
+            {% endif %}
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+    
+</div>
+
+
+
+</div>
+
+{% endblock %}
+
+{% block footer %}
+  {% include "include/footer.html" %}
+{% endblock %}

@@ -1,0 +1,76 @@
+{% extends "layout/base01.html" %}
+
+{% block head %}
+    <style>
+        div#mycontainer {width:1210px;float:left}
+        div#myinfo {width:300px;float:left;text-align:center}
+        div#mymap {float:right}
+        body {background-color:#DDDDDD;}
+        a:link {color:#666}
+        a:hover {color:#FFF}
+        th.short1 {width:100px ;text-align:center;background-color:#AAA}
+        th.long1 {width:400px ;text-align:center;background-color:#AAA}
+        td.short1 {width:100px ;text-align:center}
+        td.short2 {width:100px ;text-align:center;background-color:#AAA;font-weight:bold}
+        td.long1 {width:400px ;text-align:center}
+    </style>
+{% endblock %}
+
+<!--buttons in the header-->
+{% block header_icons %}
+  <li><a >Player:{{UserName}}</a></li>
+  <li><a href="logout">Quit</a></li>
+{% endblock %}
+
+{% block content %}
+<div id="mycontainer">
+<div id="myinfo">
+    <p class="lead" >
+        Content of Message 
+    </p>
+    <a href="/mymsg" ><button >Back to Message Box</button></a></br></br>
+    <a href="/fight" ><button >Back to My city</button></a>
+</div>
+<div id="mymap">
+    <table width="900" height="50" border="1" >
+        <tr height="50">
+            <th class="short1">Source</th>
+            <th class="short1">Start-Time</th>
+            <th class="short1">End-Time</th>
+            <th class="short1">Status</th>
+            <th class="long1">Title</th>
+        </tr>
+        <tr height="50">
+            <td class="short1">{{dt_msg.sendername}}</td>
+            <td class="short1">{{dt_msg.begin_time.strftime( '%Y-%m-%d %H:%M:%S ' )}}</td>
+            <td class="short1">{{dt_msg.end_time.strftime( '%Y-%m-%d %H:%M:%S ' )}}</td>
+            <td class="short1">
+              {% if dt_msg.status : %}
+                {% if dt_msg.status > 0 : %}
+                  Finished
+                {% else : %}
+                  Canceled
+                {% endif %}
+              {% else %}
+                Unfinished
+                <a href="/msgcancel"><button>Cancel</button></a>
+              {% endif %}
+            </td>
+            <td class="long1">{{dt_msg.title}}</td>
+        </tr>
+        <tr height="10">
+          <td colspan="5"></td>
+        </tr>
+        <tr height="200">
+          <td class="short2" >Detail</td>
+          <td class="short1" colspan="4">{{dt_msg.detail}}</td>
+        </tr>
+    </table>
+</div>
+
+</div>
+{% endblock %}
+
+{% block footer %}
+  {% include "include/footer.html" %}
+{% endblock %}

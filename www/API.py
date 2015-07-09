@@ -2,10 +2,10 @@ from db.database import init_db
 from db.database import db_session
 from db.models import *
 from tasks import *
-from sqlalchemy import and_
+#from sqlalchemy import and_
 from math import sqrt
 
-#init_db()
+init_db()
 
 ####
 #db_session.add(City('Zl',3,4))
@@ -32,7 +32,8 @@ def clean_message():
         db_session.commit()
 
 def level_up_minicipal(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
         
@@ -44,7 +45,8 @@ def level_up_minicipal(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name , Message.event == 'Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name , Message.event == 'Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event == 'Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -60,7 +62,8 @@ def level_up_minicipal(name,x,y):
     return 'Success!'
 
 def level_up_storage(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.storage >= city.minicipal:
@@ -73,7 +76,8 @@ def level_up_storage(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -89,7 +93,8 @@ def level_up_storage(name,x,y):
     return 'Success!'
     
 def level_up_barracks(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.barracks >= city.minicipal:
@@ -102,7 +107,8 @@ def level_up_barracks(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -118,7 +124,8 @@ def level_up_barracks(name,x,y):
     return 'Success!'
     
 def level_up_farm(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.farm >= city.minicipal:
@@ -131,7 +138,8 @@ def level_up_farm(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -147,7 +155,8 @@ def level_up_farm(name,x,y):
     return 'Success!'
     
 def level_up_digging(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.digging >= city.minicipal:
@@ -160,7 +169,8 @@ def level_up_digging(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -176,7 +186,8 @@ def level_up_digging(name,x,y):
     return 'Success!'
     
 def level_up_mill(name,x,y):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.mill >= city.minicipal:
@@ -189,7 +200,8 @@ def level_up_mill(name,x,y):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Level up' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Level up') & (Message.status==0)).first() is not None:
         return 'Fail: Another Construction Exist' 
     
     print 'OK'
@@ -205,7 +217,8 @@ def level_up_mill(name,x,y):
     return 'Success!'
     
 def recruit_infantry(name,x,y,num=1):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.infantry+city.cavalry+city.archer+num > city.barracks*10:
@@ -220,7 +233,8 @@ def recruit_infantry(name,x,y,num=1):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Recruit') & (Message.status==0)).first() is not None:
         return 'Fail: Another Recruit Exist' 
     
     print 'OK'
@@ -236,7 +250,8 @@ def recruit_infantry(name,x,y,num=1):
     return 'Success!'
     
 def recruit_cavalry(name,x,y,num=1):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.cavalry+city.cavalry+city.archer+num > city.barracks*10:
@@ -251,7 +266,8 @@ def recruit_cavalry(name,x,y,num=1):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Recruit') & (Message.status==0)).first() is not None:
         return 'Fail: Another Recruit Exist' 
     
     print 'OK'
@@ -267,7 +283,8 @@ def recruit_cavalry(name,x,y,num=1):
     return 'Success!'
     
 def recruit_archer(name,x,y,num=1):
-    city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
     if city is None:
         return 'Error: city not exist!'
     if city.archer+city.cavalry+city.archer+num > city.barracks*10:
@@ -282,7 +299,8 @@ def recruit_archer(name,x,y,num=1):
     if city.grass <= cost[2]:
         return 'Fail: Grass Not Enough'
     
-    if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    #if Message.query.filter(and_(Message.username == name, Message.event =='Recruit' , Message.status==0)).first() is not None:
+    if Message.query.filter((Message.username == name) & (Message.event =='Recruit') & (Message.status==0)).first() is not None:
         return 'Fail: Another Recruit Exist' 
     
     print 'OK'
@@ -297,20 +315,25 @@ def recruit_archer(name,x,y,num=1):
     recruit_archer_done.delay(mesId,x,y,num,cost[3])
     return 'Success!'
     
-def cancel_event(name,event):
-    if event != 'Attack' and event != 'Come Back':
-        mes = Message.query.filter(and_(Message.username == name, Message.event == event , Message.status != 1)).first() 
-        if mes is not None:
-            mes.status = -1
-            return 'Cancel Done'
-        else:
-            return 'Cancel Failed'
+def cancel_event(messageId):
+    mes = Message.query.filter((Message.messageId == messageId) & (Message.status != 1)).first() 
+    #if event != 'Attack' and event != 'Come Back':
+        #mes = Message.query.filter(and_(Message.messageId == messageId , Message.status != 1)).first() 
+        #mes = Message.query.filter((Message.messageId == messageId) & (Message.status != 1)).first() 
+    if mes is not None:
+        mes.status = -1
+        db_session.commit()
+        return 'Cancel Done'
+    else:
+        return 'Cancel Failed'
     
         
         
 def attack(attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):
-    attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
-    defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
+    #attacker = City.query.filter(and_(City.posX == attackerPosX, City.posY == attackerPosY)).first()
+    attacker = City.query.filter((City.posX == attackerPosX) & (City.posY == attackerPosY)).first()
+    #defenser = City.query.filter(and_(City.posX == defenserPosX, City.posY == defenserPosY)).first()
+    defenser = City.query.filter((City.posX == defenserPosX) & (City.posY == defenserPosY)).first()
     
     if attacker is None or defenser is None:
         return 'Error: city not exist!'

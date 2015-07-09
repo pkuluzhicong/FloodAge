@@ -1,0 +1,42 @@
+{% extends "layout/base01.html" %}
+
+{% block head %}
+<style>
+  body {background-image:url({{ url_for('static', filename='images/bg01.jpg') }} )}
+</style>
+{% endblock %}
+
+
+{% block header_icons %}
+  <li><a href="index">Index</a></li>
+  <li><a href="register">Register</a></li>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="starter-template">
+      <h1>Welcome to the FloodAge!</h1>
+      <p class="lead">
+        Just have fun with it!
+      </p>
+      {% if error %}
+          <p class=error><strong>Message:</strong> {{ error }}</p>
+      {% endif %}
+      <form action="/logincheck" method=post>
+        <dl>
+          <dt>Username:
+          <dd><input type=text name=username value="{{
+              request.form.username }}">
+          <dt>Password:
+          <dd><input type=password name=password>
+        </dl>
+        <input type=submit value=Login>
+      </form>
+      
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer %}
+  {% include "include/footer.html" %}
+{% endblock %}
