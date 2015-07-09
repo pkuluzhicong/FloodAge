@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 import time
 from celery import Celery
 from celery.task.base import periodic_task
@@ -20,6 +21,7 @@ from db.database import db_session
 from db.models import *
 
 init_db()
+clean_message()
 
 #db_session.add(City('Zl',3,4))
 #db_session.add(City('Lzc',2,3))
@@ -28,7 +30,7 @@ init_db()
 celery = Celery('tasks', broker='redis://localhost:6379/0')
 
 
-@celery.task()
+@celery.task(name='www.level_up_barracks_done')
 def level_up_barracks_done(mesId,x,y):#升级兵营完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -37,7 +39,7 @@ def level_up_barracks_done(mesId,x,y):#升级兵营完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). barracks+=1
     db_session.commit()
 
-@celery.task()
+@celery.task(name='www.level_up_storage_done')
 def level_up_storage_done(mesId,x,y):#升级仓库完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -46,7 +48,7 @@ def level_up_storage_done(mesId,x,y):#升级仓库完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). storage+=1
     db_session.commit()
 
-@celery.task()
+@celery.task(name='www.tasks.level_up_minicipal')
 def level_up_minicipal_done(mesId,x,y):#升级市政厅完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -55,7 +57,7 @@ def level_up_minicipal_done(mesId,x,y):#升级市政厅完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). minicipal+=1
     db_session.commit()
     
-@celery.task()
+@celery.task(name='www.level_up_farm_done')
 def level_up_farm_done(mesId,x,y):#升级农场完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -64,7 +66,7 @@ def level_up_farm_done(mesId,x,y):#升级农场完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). farm+=1
     db_session.commit()
 
-@celery.task()
+@celery.task(name='www.level_up_digging_done')
 def level_up_digging_done(mesId,x,y):#升级矿洞完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -73,7 +75,7 @@ def level_up_digging_done(mesId,x,y):#升级矿洞完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). digging+=1
     db_session.commit()
     
-@celery.task()
+@celery.task(name='www.level_up_mill_done')
 def level_up_mill_done(mesId,x,y):#升级伐木场完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -82,7 +84,7 @@ def level_up_mill_done(mesId,x,y):#升级伐木场完成事件
         City.query.filter(City.posX==x and City.posY== y).first(). mill+=1
     db_session.commit()
 
-@celery.task()
+@celery.task(name='www.recruit_infantry_done')
 def recruit_infantry_done(mesId,x,y,num):#招募步兵完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -91,7 +93,7 @@ def recruit_infantry_done(mesId,x,y,num):#招募步兵完成事件
         City.query.filter(City.posX==x and City.posY ==y).first().infantry+=num
     db_session.commit()
 
-@celery.task()
+@celery.task(name='www.recruit_cavalry_done')
 def recruit_cavalry_done(mesId,x,y,num):#招募骑兵完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -100,7 +102,7 @@ def recruit_cavalry_done(mesId,x,y,num):#招募骑兵完成事件
         City.query.filter(City.posX==x and City.posY ==y).first().cavalry+=num
     db_session.commit()
     
-@celery.task()
+@celery.task(name='www.recruit_archer_done')
 def recruit_archer_done(mesId,x,y,num):#招募弓箭手完成事件
     #time.sleep(timedelta)
     mes = Message.query.filter(Message.messageId==mesId).first()
@@ -109,7 +111,7 @@ def recruit_archer_done(mesId,x,y,num):#招募弓箭手完成事件
         City.query.filter(City.posX==x and City.posY ==y).first().archer+=num
     db_session.commit()
     
-@celery.task()
+@celery.task(name='www.attack_battle')
 def attack_battle(mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserPosY,infantryNum,cavalryNum,archerNum):#战斗事件，决定胜负，损失士兵数和战利品数
     countdown_ =  int(sqrt(attackerPosX*attackerPosX+attackerPosY*attackerPosY)*300)
     timedelta_ = timedelta(seconds = countdown_)
@@ -167,7 +169,7 @@ def attack_battle(mesId1,mesId2,attackerPosX,attackerPosY,defenserPosX,defenserP
     #attack_return.delay(mesId,attackerPosX,attackerPosY,infantryNum,cavalryNum,archerNum,wood,stone,grass,timedelta)
     attack_return.apply_async(args=[mesId,attackerPosX,attackerPosY,infantryNum,cavalryNum,archerNum,wood,stone,grass],countdown=countdown_)
     
-@celery.task()
+@celery.task(name='www.attack_return')
 def attack_return(mesId, x, y, infantryNum,cavalryNum,archerNum,wood,stone,grass):#战斗后攻击方返回事件，带回士兵和资源
     #time.sleep(timedelta)
     

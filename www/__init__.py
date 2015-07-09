@@ -22,7 +22,6 @@ def make_celery(app):
     celery.Task = ContextTask
     return celery
 
-
 from www import views, errors
 
 

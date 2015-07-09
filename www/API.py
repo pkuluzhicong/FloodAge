@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from db.database import init_db
 from db.database import db_session
 from db.models import *
@@ -33,7 +35,7 @@ def clean_message():
 
 def level_up_minicipal(name,x,y):#
     #city = City.query.filter(and_(City.posX==x , City.posY==y)).first()
-    city = City.query.filter((City.posX==x) & (City.posY==y)).first()
+    city = City.query.filter((City.posX==x) & (City.posY==y)).first()# -*- coding: utf-8 -*-
     if city is None:
         return 'Error: city not exist!'
         
